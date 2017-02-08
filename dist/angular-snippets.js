@@ -99,13 +99,16 @@
     .directive('snippets', ['$q', '$http', '$templateRequest', '$timeout', '$parse', 'snippets', function ($q, $http, $templateRequest, $timeout, $parse, snippets) {
       return angular.extend({
         restrict: 'E',
-        scope: true,
+        scope: {
+            path: '=path',
+            files: '=files'
+        },
         transclude: true,
         controller: ['$scope', '$element', '$attrs', function ($scope, $element, $attrs) {
-          var files = $parse($attrs.files)($scope),
+          var files = $scope.files,
             done = 0,
             items = [],
-            path = $attrs.path ? $attrs.path.replace(/\/+$/, '') + '/' : '';
+            path = $scope.path ? $scope.path.replace(/\/+$/, '') + '/' : '';
 
           this.contentBeforeDisabled = function () {
             return "contentBeforeDisabled" in $attrs;
